@@ -4,24 +4,24 @@ require_once 'CUrlClient.php';
 
 if(isset($_POST['user']) && isset($_POST['repo'])) {
      $curl = new CUrlClient();
-     $result = $curl->send([
+     $result = $curl->send(array(
          'url' => 'https://api.github.com/repos/'. $_POST['user'].'/'. $_POST['repo'] .'/commits',
-         'header' => ['User-Agent: test']
-     ]);
+         'header' => array('User-Agent: test')
+     ));
 
      $commits = json_decode($result, true);
-     $response = [];
+     $response = array();
 
      if(!isset($commits['message'])) {
-          $data = [];
+          $data = array();
 
           foreach ($commits as $commit) {
                $data[] = $commit['commit']['message'];
           }
 
-          $form = [
-              'questions' => [
-                  [
+          $form = array(
+              'questions' => array(
+                  array(
                       'labelAlign' => 'Auto',
                       'multipleSelections' => 'No',
                       'name' => 'input1',
@@ -37,8 +37,8 @@ if(isset($_POST['user']) && isset($_POST['repo'])) {
                       'type' => 'control_dropdown',
                       'visibleOptions' => 1,
                       'width' => 150
-                  ],
-                  [
+                  ),
+                  array(
                       'buttonAlign' => 'Auto',
                       'buttonStyle' => 'None',
                       'clear' => 'No',
@@ -48,8 +48,8 @@ if(isset($_POST['user']) && isset($_POST['repo'])) {
                       'qid' => 2,
                       'text' => 'Send',
                       'type' => 'control_button'
-                  ],
-                  [
+                  ),
+                  array(
                       'headerType' => 'Default',
                       'name' => 'clickTo',
                       'order' => 1,
@@ -58,20 +58,20 @@ if(isset($_POST['user']) && isset($_POST['repo'])) {
                       'textAlign' => 'Left',
                       'type' => 'control_head',
                       'verticalTextAlign' => 'Middle'
-                  ]
-              ],
-              'properties' => [
+                  )
+               ),
+              'properties' => array(
                   'title' => 'Submission ' . date('d/m/Y H:i:s')
-              ]
-          ];
+              )
+          );
 
-          $jotFormData = array_merge(['apikey' => JOT_FORM_API_KEY], encodeFormParam($form));
+          $jotFormData = array_merge(array('apikey' => JOT_FORM_API_KEY), encodeFormParam($form));
 
-          $result = $curl->send([
+          $result = $curl->send(array(
               'url' => 'https://api.jotform.com/form',
               'type' => 'POST',
               'data' => $jotFormData
-          ]);
+          ));
 
           $result = json_decode($result, true);
 
@@ -91,7 +91,7 @@ if(isset($_POST['user']) && isset($_POST['repo'])) {
 }
 
 function encodeFormParam($form){
-     $data = [];
+     $data = array();
 
      foreach($form as $key => $options) {
           foreach($options as $index => $option) {
@@ -149,7 +149,7 @@ function encodeFormParam($form){
                          e.stopPropagation();
 
                          $.ajax({
-                              url: '/jotform/index.php',
+                              url: '/index.php',
                               type: 'POST',
                               dataType: 'JSON',
                               data: {

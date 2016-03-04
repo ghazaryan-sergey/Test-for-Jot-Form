@@ -14,7 +14,7 @@ class CUrlClient
     public function send($option)
     {
         //reset curl option
-        curl_reset($this->curl);
+        //curl_reset($this->curl);
 
         //add default option
         $default = $this->defaultOption();
@@ -86,10 +86,10 @@ class CUrlClient
     }
 
    private function defaultOption(){
-        return [
+        return array(
             'type' => 'GET',
             'return_transfer' => true,
             'ssl' => false
-        ];
+        );
     }
 }
